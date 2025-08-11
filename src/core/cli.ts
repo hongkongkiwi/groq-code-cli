@@ -8,6 +8,18 @@ import App from '../ui/App.js';
 
 const program = new Command();
 
+/**
+ * Start the interactive terminal chat UI by creating an Agent and rendering the Ink App.
+ *
+ * Initializes an AI agent with the given temperature, optional system prompt, debug mode, and optional proxy,
+ * prints the CLI banner, validates the proxy URL (if provided), then renders the React/Ink UI. On invalid proxy
+ * or on initialization errors the process exits with code 1.
+ *
+ * @param temperature - Sampling temperature used for model generation.
+ * @param system - Optional system message to seed the agent's context; pass `null` to use defaults.
+ * @param debug - When true, enables debug logging for the agent.
+ * @param proxy - Optional proxy URL to route requests through (e.g., `http://proxy:8080` or `socks5://proxy:1080`).
+ */
 async function startChat(
   temperature: number,
   system: string | null,
