@@ -55,6 +55,21 @@ export class Agent {
 
     // Add system message to conversation
     this.messages.push({ role: 'system', content: this.systemMessage });
+
+    // Load project context if available
+    try {
+      const contextPath = path.join(process.cwd(), '.groq', 'context.md');
+      if (fs.existsSync(contextPath)) {
+        const ctx = fs.readFileSync(contextPath, 'utf-8');
+        const trimmed = ctx.length > 20000 ? ctx.slice(0, 20000) + '\n... [truncated]' : ctx;
+        this.messages.push({
+          role: 'system',
+          content: `Project context loaded from .groq/context.md. Use this as high-level reference when reasoning about the repository.\n\n${trimmed}`
+        });
+      }
+    } catch (_) {
+      // Ignore context load errors
+    }
   }
 
   static async create(
